@@ -22,7 +22,8 @@ public class CarControl : MonoBehaviour
 
     private void Update()
     {
-        
+        if (boostCount > boostCap)
+            boostCount = boostCap;
 
         velocity = rb.linearVelocity;
 
@@ -87,6 +88,20 @@ public class CarControl : MonoBehaviour
         if (grounded)
         {
             doubleJump = true;
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "MiniBoost")
+        {
+            if(boostCount < boostCap)
+                boostCount = boostCount + 6;
+        }
+        if(other.gameObject.tag == "FullBoost")
+        {
+            if (boostCount < boostCap)
+                boostCount = boostCap;
         }
     }
 }
