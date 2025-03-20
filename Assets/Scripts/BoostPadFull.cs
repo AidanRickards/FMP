@@ -44,7 +44,7 @@ public class BoostPadFull : MonoBehaviour
         if (collision.gameObject.tag == "Player" && cc.boostCount < 100)
         {
 
-            currentTime = 5;
+            currentTime = 10;
             active = false;
             rnd.enabled = false;
             rnd2.enabled = false;

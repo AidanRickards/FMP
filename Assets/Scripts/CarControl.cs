@@ -20,6 +20,13 @@ public class CarControl : MonoBehaviour
 
     public bool doubleJump = false;
 
+    Vector3 carAngleVelocityA;
+    Vector3 carAngleVelocityB;
+    private void Start()
+    {
+        carAngleVelocityA = new Vector3(0, 50, 0);
+        carAngleVelocityB = new Vector3(0, 75, 0);
+    }
     private void Update()
     {
         if (boostCount > boostCap)
@@ -76,9 +83,26 @@ public class CarControl : MonoBehaviour
         if (!grounded)
         {
             //Double Jump
-            if (Input.GetKeyDown(KeyCode.Space) && doubleJump !=(Input.GetAxis("Vertical") != 0))
+            if (Input.GetKeyDown(KeyCode.Space) && doubleJump )
             {
                 rb.AddRelativeForce(Vector3.up * jumpForce);
+                doubleJump = false;
+            }
+
+            //ariel control turning horizontal
+            if(Input.GetAxis("Horizontal") != 0)
+            {
+                carAngleVelocityA = new Vector3(0, 50 * Input.GetAxis("Horizontal"), 0);
+                Quaternion deltaRotation = Quaternion.Euler(carAngleVelocityA * Time.deltaTime);
+                rb.MoveRotation(rb.rotation * deltaRotation);
+            }
+
+            //ariel control turning horizontal
+            if (Input.GetAxis("Vertical") != 0)
+            {
+                carAngleVelocityB = new Vector3(75 * Input.GetAxis("Vertical"), 0, 0);
+                Quaternion deltaRotationB = Quaternion.Euler(carAngleVelocityB * Time.deltaTime);
+                rb.MoveRotation(rb.rotation * deltaRotationB);
             }
         }
     }
