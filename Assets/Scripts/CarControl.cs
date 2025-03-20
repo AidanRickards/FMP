@@ -22,6 +22,8 @@ public class CarControl : MonoBehaviour
 
     Vector3 carAngleVelocityA;
     Vector3 carAngleVelocityB;
+    Vector3 carAngleVelocityC;
+    Vector3 carAngleVelocityD;
     private void Start()
     {
         carAngleVelocityA = new Vector3(0, 50, 0);
@@ -103,6 +105,22 @@ public class CarControl : MonoBehaviour
                 carAngleVelocityB = new Vector3(75 * Input.GetAxis("Vertical"), 0, 0);
                 Quaternion deltaRotationB = Quaternion.Euler(carAngleVelocityB * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationB);
+            }
+
+            //air roll left
+            if (Input.GetKey(KeyCode.J))
+            {
+                carAngleVelocityC = new Vector3(0, 0, 140);
+                Quaternion deltaRotationC = Quaternion.Euler(carAngleVelocityC * Time.deltaTime);
+                rb.MoveRotation(rb.rotation * deltaRotationC);
+            }
+
+            //air roll right
+            if (Input.GetKey(KeyCode.L))
+            {
+                carAngleVelocityD = new Vector3(0, 0, -140);
+                Quaternion deltaRotationD = Quaternion.Euler(carAngleVelocityD * Time.deltaTime);
+                rb.MoveRotation(rb.rotation * deltaRotationD);
             }
         }
     }
