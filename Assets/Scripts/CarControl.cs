@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CarControl : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CarControl : MonoBehaviour
     public float jumpForce;
     public float boostForce;
     public Vector3 velocity;
+    public float flipForce;
 
     public float boostCount = 33;
     private int boostCap = 100;
@@ -24,6 +26,12 @@ public class CarControl : MonoBehaviour
     Vector3 carAngleVelocityB;
     Vector3 carAngleVelocityC;
     Vector3 carAngleVelocityD;
+    Vector3 carAngleVelocityE;
+    Vector3 carAngleVelocityF;
+
+    public float rotationSpeed = 360f;
+
+    public JumpTimer jt;
     private void Start()
     {
         carAngleVelocityA = new Vector3(0, 50, 0);
@@ -77,7 +85,8 @@ public class CarControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (!grounded) ;
+            
     }
 
     public void NotGrounded()
@@ -85,14 +94,14 @@ public class CarControl : MonoBehaviour
         if (!grounded)
         {
             //Double Jump
-            if (Input.GetKeyDown(KeyCode.Space) && doubleJump )
+            if (Input.GetKeyDown(KeyCode.Space) && doubleJump && Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") ==0)
             {
                 rb.AddRelativeForce(Vector3.up * jumpForce);
                 doubleJump = false;
             }
 
             //ariel control turning horizontal
-            if(Input.GetAxis("Horizontal") != 0)
+            if (Input.GetAxis("Horizontal") != 0 && Input.GetKey(KeyCode.Space) == false)
             {
                 carAngleVelocityA = new Vector3(0, 50 * Input.GetAxis("Horizontal"), 0);
                 Quaternion deltaRotation = Quaternion.Euler(carAngleVelocityA * Time.deltaTime);
@@ -100,7 +109,7 @@ public class CarControl : MonoBehaviour
             }
 
             //ariel control turning horizontal
-            if (Input.GetAxis("Vertical") != 0)
+            if (Input.GetAxis("Vertical") != 0 && Input.GetKey(KeyCode.Space) == false)
             {
                 carAngleVelocityB = new Vector3(75 * Input.GetAxis("Vertical"), 0, 0);
                 Quaternion deltaRotationB = Quaternion.Euler(carAngleVelocityB * Time.deltaTime);
@@ -122,6 +131,9 @@ public class CarControl : MonoBehaviour
                 Quaternion deltaRotationD = Quaternion.Euler(carAngleVelocityD * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationD);
             }
+
+            //flip
+            CheckForFlip();
         }
     }
 
@@ -130,6 +142,8 @@ public class CarControl : MonoBehaviour
         if (grounded)
         {
             doubleJump = true;
+
+            StopAllCoroutines();
         }
     }
 
@@ -145,5 +159,88 @@ public class CarControl : MonoBehaviour
             if (boostCount < boostCap)
                 boostCount = boostCap;
         }
+    }
+
+    public void CheckForFlip()
+    {
+        if ((Input.GetAxis("Vertical") != 0) || (Input.GetAxis("Horizontal") != 0))
+        {
+            print("debug");
+            if (Input.GetKeyDown(KeyCode.Space) == true && doubleJump)
+            {
+                print("Flipping");
+                Flip();
+            }
+        }
+    }
+
+    /*public void Flip()
+    {
+        //Vector3 FlipDirection = new Vector3(flipForce * Input.GetAxis("Vertical"), 0, flipForce * Input.GetAxis("Horizontal"));
+        Input.GetAxis("Vertical") ;
+        doubleJump = false;
+        //rb.linearVelocity = new Vector4 (flipForce * Input.GetAxis("Vertical"), 0, flipForce * Input.GetAxis("Horizontal"), Time.deltaTime);
+        //rb.AddForce(FlipDirection);
+        rb.AddRelativeForce(Vector3.right * (flipForce * Input.GetAxis("Horizontal")), ForceMode.Acceleration);
+        rb.AddRelativeForce(Vector3.forward * (flipForce * Input.GetAxis("Vertical")), ForceMode.Acceleration);
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.y);
+
+        /*carAngleVelocityE = new Vector3(360 * Input.GetAxis("Vertical"), 0, 0);
+        Quaternion deltaRotationE = Quaternion.Euler(carAngleVelocityE * Time.deltaTime);
+        rb.MoveRotation(rb.rotation * deltaRotationE);
+
+        Rotate();
+    }
+
+    IEnumerator Rotate()
+    {
+        float elapsedTime = 0f;
+        float duration = 0.5f; // Adjust duration as needed
+        float rotationAmount = 360f * Input.GetAxis("Vertical");
+        Quaternion startRotation = rb.rotation;
+        Quaternion endRotation = startRotation * Quaternion.Euler(rotationAmount, 0, 0);
+
+        while (elapsedTime < duration)
+        {
+            rb.MoveRotation(Quaternion.Slerp(startRotation, endRotation, elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.MoveRotation(endRotation);
+
+    }*/
+
+    public void Flip()
+    {
+        float verticalInput = Input.GetAxis("Vertical"); // Store input before coroutine
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+        doubleJump = false;
+
+        rb.AddRelativeForce(Vector3.right * (flipForce * horizontalInput), ForceMode.Acceleration);
+        rb.AddRelativeForce(Vector3.forward * (flipForce * verticalInput), ForceMode.Acceleration);
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+
+        StartCoroutine(Rotate(verticalInput)); // Pass stored input
+    }
+
+    IEnumerator Rotate(float verticalInput)
+    {
+        float elapsedTime = 0f;
+        float duration = 0.5f; // Adjust duration as needed
+        float rotationAmount = 360f * verticalInput;
+
+        Quaternion startRotation = rb.rotation;
+        Quaternion endRotation = startRotation * Quaternion.Euler(rotationAmount, 0, 0);
+
+        while (elapsedTime < duration)
+        {
+            rb.MoveRotation(Quaternion.Slerp(startRotation, endRotation, elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.MoveRotation(endRotation);
     }
 }
