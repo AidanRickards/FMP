@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CarControl : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CarControl : MonoBehaviour
     public float boostForce;
     public Vector3 velocity;
     public float flipForce;
+    private bool flipping = false; // Prevents mid-air spamming
+    public float flipDuration = 0.5f; // Controls how fast the flip completes
 
     public float boostCount = 33;
     private int boostCap = 100;
@@ -31,11 +34,15 @@ public class CarControl : MonoBehaviour
 
     public float rotationSpeed = 360f;
 
+    bool flipStarted;
+
+
     public JumpTimer jt;
     private void Start()
     {
         carAngleVelocityA = new Vector3(0, 50, 0);
         carAngleVelocityB = new Vector3(0, 75, 0);
+        flipStarted = false;
     }
     private void Update()
     {
@@ -133,7 +140,23 @@ public class CarControl : MonoBehaviour
             }
 
             //flip
-            CheckForFlip();
+
+            if (flipStarted == false)
+            {
+                CheckForFlip();
+            }
+            else
+            {
+                //
+                transform.Rotate(0,0,1);
+
+                //check for ground
+
+                //check for flip finishing
+
+                print("zr=" + transform.localEulerAngles.z);
+            }
+
         }
     }
 
@@ -168,13 +191,15 @@ public class CarControl : MonoBehaviour
             print("debug");
             if (Input.GetKeyDown(KeyCode.Space) == true && doubleJump)
             {
-                print("Flipping");
-                Flip();
+                flipStarted = true;
+                //print("Flipping");
+                //Flip();
+
             }
         }
     }
 
-    /*public void Flip()
+    public void Flip()
     {
         //Vector3 FlipDirection = new Vector3(flipForce * Input.GetAxis("Vertical"), 0, flipForce * Input.GetAxis("Horizontal"));
         Input.GetAxis("Vertical") ;
@@ -185,7 +210,7 @@ public class CarControl : MonoBehaviour
         rb.AddRelativeForce(Vector3.forward * (flipForce * Input.GetAxis("Vertical")), ForceMode.Acceleration);
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.y);
 
-        /*carAngleVelocityE = new Vector3(360 * Input.GetAxis("Vertical"), 0, 0);
+        carAngleVelocityE = new Vector3(360 * Input.GetAxis("Vertical"), 0, 0);
         Quaternion deltaRotationE = Quaternion.Euler(carAngleVelocityE * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotationE);
 
@@ -209,8 +234,8 @@ public class CarControl : MonoBehaviour
 
         rb.MoveRotation(endRotation);
 
-    }*/
-
+    }
+    /*
     public void Flip()
     {
         float verticalInput = Input.GetAxis("Vertical"); // Store input before coroutine
@@ -242,5 +267,39 @@ public class CarControl : MonoBehaviour
         }
 
         rb.MoveRotation(endRotation);
+    }*/
+
+    /*public void Flip()
+    {
+        {
+            float verticalInput = Input.GetAxis("Vertical");
+            float horizontalInput = Input.GetAxis("Horizontal");
+
+            if (verticalInput == 0 && horizontalInput == 0) return; // No input, no flip
+
+            flipping = true;
+            doubleJump = false;
+
+            // Cancel Y velocity to avoid weird physics
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+
+            // Determine force direction
+            Vector3 flipForceDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+            rb.AddForce(flipForceDirection * flipForce, ForceMode.Impulse);
+
+            // Determine rotation axis
+            Vector3 rotationAxis = Vector3.right * verticalInput + Vector3.forward * horizontalInput;
+
+            // Apply controlled torque
+            rb.AddTorque(rotationAxis * flipForce * 10f, ForceMode.Impulse);
+
+            StartCoroutine(ResetFlip());
+        }
     }
+
+    private IEnumerator ResetFlip()
+    {
+        yield return new WaitForSeconds(flipDuration);
+        flipping = false; // Allow another flip after cooldown
+    }*/
 }
