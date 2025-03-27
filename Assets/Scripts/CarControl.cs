@@ -6,6 +6,8 @@ public class CarControl : MonoBehaviour
 {
     public Rigidbody rb;
 
+    public GameObject carBody;
+
     public bool grounded = false;
     public float groundCheckDistance;
     private float bufferCheckDistance = 0.1f;
@@ -147,14 +149,25 @@ public class CarControl : MonoBehaviour
             }
             else
             {
-                //
-                transform.Rotate(0,0,1);
+                StartCoroutine("Test");
 
+                /*float currentRotationZ = transform.localEulerAngles.z;
+                float currentRotationX = transform.localEulerAngles.x;
+
+                float currentlyHeldZ = Input.GetAxis("Horizontal");
+                float currentlyHeldX = Input.GetAxis("Vertical");
+
+                //
+                for (int i = 0; i < 360; i++)
+                {
+                    transform.Rotate(1 * currentlyHeldX, 0, 1 * currentlyHeldZ);
+                    flipStarted = false;
+                }
                 //check for ground
 
                 //check for flip finishing
 
-                print("zr=" + transform.localEulerAngles.z);
+                print("zr=" + transform.localEulerAngles.z);*/
             }
 
         }
@@ -215,6 +228,49 @@ public class CarControl : MonoBehaviour
         rb.MoveRotation(rb.rotation * deltaRotationE);
 
         Rotate();
+    }
+
+    IEnumerator Test()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.0068f);
+
+        float currentRotationZ = transform.localEulerAngles.z;
+        float currentRotationX = transform.localEulerAngles.x;
+
+        float currentlyHeldZ = -Input.GetAxis("Horizontal");
+        float currentlyHeldX = Input.GetAxis("Vertical");
+
+        if(currentlyHeldX > 0)
+        {
+            currentlyHeldX = 1;
+        }
+        if (currentlyHeldX < 0)
+        {
+            currentlyHeldX = -1;
+        }
+        if(currentlyHeldZ > 0)
+        {
+            currentlyHeldZ = 1;
+        }
+        if (currentlyHeldZ < 0)
+        {
+            currentlyHeldZ = -1;
+        }
+
+        //
+        for (int i = 0; i < 60; i++)
+        {
+            transform.Rotate(6 * currentlyHeldX, 0, 0);
+            carBody.transform.Rotate(0, 0, 6 * currentlyHeldZ);
+            flipStarted = false;
+            yield return wait;
+        }
+        //check for ground
+
+        //check for flip finishing
+
+        print("zr=" + transform.localEulerAngles.z);
+        
     }
 
     IEnumerator Rotate()
