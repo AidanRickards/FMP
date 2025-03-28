@@ -8,6 +8,8 @@ public class CarControl : MonoBehaviour
 
     public GameObject carBody;
 
+    public WheelController wc;
+
     public bool grounded = false;
     public float groundCheckDistance;
     private float bufferCheckDistance = 0.1f;
@@ -38,6 +40,14 @@ public class CarControl : MonoBehaviour
 
     bool flipStarted;
 
+    public WheelCollider frontLeft;
+    public WheelCollider frontRight;
+    public GameObject backRight;
+    public GameObject backLeft;
+
+    public GameObject wheelsPrefab;
+    public GameObject wheelSpawnPoint;
+    GameObject wheels;
 
     public JumpTimer jt;
     private void Start()
@@ -45,6 +55,8 @@ public class CarControl : MonoBehaviour
         carAngleVelocityA = new Vector3(0, 50, 0);
         carAngleVelocityB = new Vector3(0, 75, 0);
         flipStarted = false;
+
+        wheels = GameObject.FindGameObjectWithTag("Wheel");
     }
     private void Update()
     {
@@ -131,6 +143,15 @@ public class CarControl : MonoBehaviour
                 carAngleVelocityC = new Vector3(0, 0, 140);
                 Quaternion deltaRotationC = Quaternion.Euler(carAngleVelocityC * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationC);
+
+                //frontLeft.transform.rotation = backLeft.transform.rotation;
+                //frontRight.transform.rotation = backRight.transform.rotation;
+
+                Destroy(wheels);
+                wheels = Instantiate (wheelsPrefab, wheelSpawnPoint.transform.position, wheelSpawnPoint.transform.rotation, this.gameObject.transform);
+                
+
+                //frontLeft.localRotation = Quaternion.Euler(0, frontLeft.steerAngle, 0);
             }
 
             //air roll right
@@ -139,6 +160,11 @@ public class CarControl : MonoBehaviour
                 carAngleVelocityD = new Vector3(0, 0, -140);
                 Quaternion deltaRotationD = Quaternion.Euler(carAngleVelocityD * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationD);
+
+                //frontLeft.transform.rotation = backLeft.transform.rotation;
+                //frontRight.transform.rotation = backRight.transform.rotation;
+
+                //wheelTransform.localRotation = Quaternion.Euler(0, wheelCollider.steerAngle, 0);
             }
 
             //flip
@@ -221,18 +247,20 @@ public class CarControl : MonoBehaviour
         //rb.AddForce(FlipDirection);
         rb.AddRelativeForce(Vector3.right * (flipForce * Input.GetAxis("Horizontal")), ForceMode.Acceleration);
         rb.AddRelativeForce(Vector3.forward * (flipForce * Input.GetAxis("Vertical")), ForceMode.Acceleration);
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.y);
+        //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.y);
 
         carAngleVelocityE = new Vector3(360 * Input.GetAxis("Vertical"), 0, 0);
         Quaternion deltaRotationE = Quaternion.Euler(carAngleVelocityE * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotationE);
 
-        Rotate();
+        //Rotate();
     }
 
     IEnumerator Test()
     {
         WaitForSeconds wait = new WaitForSeconds(0.0068f);
+
+        Flip();
 
         float currentRotationZ = transform.localEulerAngles.z;
         float currentRotationX = transform.localEulerAngles.x;

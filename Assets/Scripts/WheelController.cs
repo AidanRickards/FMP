@@ -20,6 +20,8 @@ public class WheelController : MonoBehaviour
 
     public CarControl controller;
 
+
+
     private void FixedUpdate()
     {
         if (Input.GetAxis("Vertical") != 0)
@@ -30,38 +32,46 @@ public class WheelController : MonoBehaviour
 
                 currentAcceleration = acceleration * Input.GetAxis("Vertical");
             }
-            
-           
-                /*if (!controller.boosting)
-                {
-                    if (controller.rb.linearVelocity.x > 15.1f)
-                    {
-                        controller.rb.linearVelocity = new Vector3(15, controller.rb.linearVelocity.y, controller.rb.linearVelocity.z);
-                    }
-                    if (controller.rb.linearVelocity.x < -15.1f)
-                    {
-                        controller.rb.linearVelocity = new Vector3(-15, controller.rb.linearVelocity.y, controller.rb.linearVelocity.z);
-                    }
 
-                if (controller.rb.linearVelocity.z > 15.1f)
+
+            /*if (!controller.boosting)
+            {
+                if (controller.rb.linearVelocity.x > 15.1f)
                 {
-                    controller.rb.linearVelocity = new Vector3(controller.rb.linearVelocity.x, controller.rb.linearVelocity.y, 15);
+                    controller.rb.linearVelocity = new Vector3(15, controller.rb.linearVelocity.y, controller.rb.linearVelocity.z);
                 }
-                if (controller.rb.linearVelocity.z < -15.1f)
+                if (controller.rb.linearVelocity.x < -15.1f)
                 {
-                    controller.rb.linearVelocity = new Vector3(controller.rb.linearVelocity.x, controller.rb.linearVelocity.y, -15);
+                    controller.rb.linearVelocity = new Vector3(-15, controller.rb.linearVelocity.y, controller.rb.linearVelocity.z);
                 }
 
+            if (controller.rb.linearVelocity.z > 15.1f)
+            {
+                controller.rb.linearVelocity = new Vector3(controller.rb.linearVelocity.x, controller.rb.linearVelocity.y, 15);
             }
-                else
-                {
+            if (controller.rb.linearVelocity.z < -15.1f)
+            {
+                controller.rb.linearVelocity = new Vector3(controller.rb.linearVelocity.x, controller.rb.linearVelocity.y, -15);
+            }
 
-                }*/
         }
-        
+            else
+            {
 
-        //if space is pressent give breakingforce value
-        if (Input.GetKey(KeyCode.LeftControl))
+            }*/
+        }
+
+        if (Input.GetAxis("Vertical") == 0)
+        {
+            if (controller.grounded == true)
+            {
+                //get forward/reverse acceleration from the vertical axis (W and s keys)
+                if(currentAcceleration > 0f)
+                currentAcceleration = -acceleration * Input.GetAxis("Vertical");
+            }
+        }
+            //if space is pressent give breakingforce value
+            if (Input.GetKey(KeyCode.LeftControl))
         {
             currentBreakForce = breakingForce;
         }
@@ -90,9 +100,11 @@ public class WheelController : MonoBehaviour
 
         UpdateWheel(frontLeft, frontLeftTransform);
         UpdateWheel(frontRight, frontRightTransform);
+
+        FixWheel(frontLeft);
     }
 
-    void UpdateWheel ( WheelCollider col, Transform trans)
+    void UpdateWheel(WheelCollider col, Transform trans)
     {
         Vector3 position;
         Quaternion rotation;
@@ -101,4 +113,28 @@ public class WheelController : MonoBehaviour
         trans.position = position;
         trans.rotation = rotation;
     }
+
+    void FixWheel(WheelCollider col)
+    {
+        if (controller.grounded == false && (Input.GetKey(KeyCode.J) || Input.GetKey(KeyCode.L)))
+        {
+            frontLeft = GameObject.Find("FrontLeft").GetComponent<WheelCollider>();
+            frontRight = GameObject.Find("FrontRight").GetComponent<WheelCollider>();
+            backLeft = GameObject.Find("BaclLeft").GetComponent<WheelCollider>();
+            backRight = GameObject.Find("BackRight").GetComponent<WheelCollider>();
+
+            frontLeftTransform = GameObject.Find("WheelFL").GetComponent<Transform>();
+            frontRightTransform = GameObject.Find("WheelFR").GetComponent<Transform>();
+
+
+        }
+
+
+        
+    }
+
+    
+
+    
 }
+

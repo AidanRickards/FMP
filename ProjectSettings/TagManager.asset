@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - MiniBoost
   - FullBoost
+  - Wheel
+  - FrontL
   layers:
   - Default
   - TransparentFX
