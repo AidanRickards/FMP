@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class WheelController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class WheelController : MonoBehaviour
     public float acceleration = 500f;
     public float breakingForce = 300f;
     public float maxTurnAngle = 15f;
+    public float stopForce = 1000000f;
 
     private float currentAcceleration = 0f;
     private float currentBreakForce = 0f;
@@ -20,9 +22,37 @@ public class WheelController : MonoBehaviour
 
     public CarControl controller;
 
+    public RotationConstraint fr;
+    public RotationConstraint fl;
+    public RotationConstraint br;
+    public RotationConstraint bl;
 
 
-    private void FixedUpdate()
+    public void Update()
+    {
+        if (!GameController.gameAwake)
+        {
+            WheelFrictionCurve curve = frontLeft.forwardFriction;
+            curve.stiffness = 0;
+
+            frontLeft.forwardFriction = curve;
+            frontRight.forwardFriction = curve;
+            backLeft.forwardFriction = curve;
+            backRight.forwardFriction = curve;
+        }
+        if (GameController.gameAwake)
+        {
+            WheelFrictionCurve curve = frontLeft.forwardFriction;
+            curve.stiffness = 1;
+
+            frontLeft.forwardFriction = curve;
+            frontRight.forwardFriction = curve;
+            backLeft.forwardFriction = curve;
+            backRight.forwardFriction = curve;
+        }
+    }
+
+    public void FixedUpdate()
     {
         if (Input.GetAxis("Vertical") != 0)
         {
@@ -101,7 +131,7 @@ public class WheelController : MonoBehaviour
         UpdateWheel(frontLeft, frontLeftTransform);
         UpdateWheel(frontRight, frontRightTransform);
 
-        FixWheel(frontLeft);
+        FixWheel();
     }
 
     void UpdateWheel(WheelCollider col, Transform trans)
@@ -114,13 +144,13 @@ public class WheelController : MonoBehaviour
         trans.rotation = rotation;
     }
 
-    void FixWheel(WheelCollider col)
+    void FixWheel()
     {
         if (controller.grounded == false && (Input.GetKey(KeyCode.J) || Input.GetKey(KeyCode.L)))
         {
             frontLeft = GameObject.Find("FrontLeft").GetComponent<WheelCollider>();
             frontRight = GameObject.Find("FrontRight").GetComponent<WheelCollider>();
-            backLeft = GameObject.Find("BaclLeft").GetComponent<WheelCollider>();
+            backLeft = GameObject.Find("BackLeft").GetComponent<WheelCollider>();
             backRight = GameObject.Find("BackRight").GetComponent<WheelCollider>();
 
             frontLeftTransform = GameObject.Find("WheelFL").GetComponent<Transform>();
@@ -128,10 +158,7 @@ public class WheelController : MonoBehaviour
 
 
         }
-
-
-        
-    }
+     }
 
     
 

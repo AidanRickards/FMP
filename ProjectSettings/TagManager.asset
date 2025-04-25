@@ -9,6 +9,8 @@ TagManager:
   - FullBoost
   - Wheel
   - FrontL
+  - goal1
+  - goal2
   layers:
   - Default
   - TransparentFX

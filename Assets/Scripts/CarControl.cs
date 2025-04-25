@@ -7,6 +7,7 @@ public class CarControl : MonoBehaviour
     public Rigidbody rb;
 
     public GameObject carBody;
+    public GameObject player;
 
     public WheelController wc;
 
@@ -60,48 +61,59 @@ public class CarControl : MonoBehaviour
     }
     private void Update()
     {
-        if (boostCount > boostCap)
-            boostCount = boostCap;
 
-        velocity = rb.linearVelocity;
+        if (GameController.gameAwake)
+        {
+            if (boostCount > boostCap)
+                boostCount = boostCap;
 
-        /*if (rb.linearVelocity.x > 30.1f)
-        {
-            rb.linearVelocity = new Vector3(30, rb.linearVelocity.y, rb.linearVelocity.z);
-        }
-        if (rb.linearVelocity.x < -30.1f)
-        {
-            rb.linearVelocity = new Vector3(-30, rb.linearVelocity.y, rb.linearVelocity.z);
-        }*/
-        
-        RaycastHit hit;
+            velocity = rb.linearVelocity;
 
-        if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
-        {
+            /*if (rb.linearVelocity.x > 30.1f)
+            {
+                rb.linearVelocity = new Vector3(30, rb.linearVelocity.y, rb.linearVelocity.z);
+            }
+            if (rb.linearVelocity.x < -30.1f)
+            {
+                rb.linearVelocity = new Vector3(-30, rb.linearVelocity.y, rb.linearVelocity.z);
+            }*/
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
+            {
                 Debug.DrawRay(hit.point, hit.normal, Color.yellow);
                 grounded = true;
-        }
-        else
-        {
+            }
+            else
+            {
                 grounded = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && grounded)
+            {
+                rb.AddRelativeForce(Vector3.up * jumpForce);
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift) && boostCount > 0)
+            {
+                rb.AddRelativeForce(Vector3.forward * boostForce);
+                pSystem1.Emit(1);
+                pSystem2.Emit(1);
+                if (SettingsController.unlimitedBoost == false)
+                    boostCount = boostCount - 0.1f;
+            }
+
+            NotGrounded();
+            Grounded();
+
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                /*Destroy(this);
+                Instantiate(player, wheelSpawnPoint.transform.position,Quaternion.Euler(0,this.transform.rotation.y, 0), this.gameObject.transform);*/
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
-        {
-            rb.AddRelativeForce(Vector3.up * jumpForce);
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift) && boostCount > 0)
-        {
-            rb.AddRelativeForce(Vector3.forward * boostForce);
-            pSystem1.Emit(1);
-            pSystem2.Emit(1);
-            boostCount = boostCount - 0.1f;
-        }
-
-        NotGrounded();
-        Grounded();
-
     }
 
     private void FixedUpdate()
@@ -147,9 +159,9 @@ public class CarControl : MonoBehaviour
                 //frontLeft.transform.rotation = backLeft.transform.rotation;
                 //frontRight.transform.rotation = backRight.transform.rotation;
 
-                Destroy(wheels);
+                /*Destroy(wheels);
                 wheels = Instantiate (wheelsPrefab, wheelSpawnPoint.transform.position, wheelSpawnPoint.transform.rotation, this.gameObject.transform);
-                
+                */
 
                 //frontLeft.localRotation = Quaternion.Euler(0, frontLeft.steerAngle, 0);
             }

@@ -212,6 +212,7 @@ MonoBehaviour:
   active: 1
   currentTime: 5
   boostpad: {fileID: 6355950388268964084}
+  cc: {fileID: 0}
 --- !u!1 &7190584750346964057
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,8 +239,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.14, z: -36}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9190041681500748245}
   - {fileID: 3714433053273579887}
