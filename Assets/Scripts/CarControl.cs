@@ -118,7 +118,6 @@ public class CarControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!grounded) ;
             
     }
 
@@ -216,7 +215,8 @@ public class CarControl : MonoBehaviour
         if (grounded)
         {
             doubleJump = true;
-
+            //carBody.transform..z = (carBody.transform.rotation.z * 0);
+            carBody.transform.localEulerAngles = Vector3.zero; 
             StopAllCoroutines();
         }
     }
@@ -309,6 +309,7 @@ public class CarControl : MonoBehaviour
 
         //check for flip finishing
 
+        
         print("zr=" + transform.localEulerAngles.z);
         
     }

@@ -19,6 +19,8 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SettingsController.gameTime = dropdown.value;
+
         if(toggle.isOn)
         {
             SettingsController.unlimitedBoost = true;

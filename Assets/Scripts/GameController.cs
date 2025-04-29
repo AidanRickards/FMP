@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameController : MonoBehaviour
 
     public static int score1 = 0;
     public static int score2 = 0;
+    public TMP_Text blueScore;
+    public TMP_Text orangeScore;
 
     public GameObject player;
     public GameObject ball;
@@ -24,15 +27,70 @@ public class GameController : MonoBehaviour
 
     public int countdownNum;
 
+    float elapsedTime;
+    public float countTime;
+    public TMP_Text time;
+
+
     void Start()
     {
         StartCoroutine("Restart");
+
+        if (SettingsController.gameTime == 0)
+        {
+            print("done");
+            countTime = 300;
+        }
+        if (SettingsController.gameTime == 1)
+        {
+            print("done");
+            countTime = 600;
+        }
+        if (SettingsController.gameTime == 2)
+        {
+            print("done");
+            countTime = 1200;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         countdown.text = countdownNum.ToString();
+
+        blueScore.text = score1.ToString();
+        orangeScore.text = score2.ToString();
+
+        if (gameAwake)
+        {
+            if (SettingsController.gameTime != 3)
+            {
+                if (countTime > 0)
+                {
+                    Console.WriteLine("Working");
+                    countTime -= Time.deltaTime;
+                    int minutes = Mathf.FloorToInt(countTime / 60);
+                    int seconds = Mathf.FloorToInt(countTime % 60);
+                    time.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                }
+                else
+                {
+                    countTime = 0;
+                    int minutes = Mathf.FloorToInt(countTime / 60);
+                    int seconds = Mathf.FloorToInt(countTime % 60);
+                    time.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                }
+            }
+            if (SettingsController.gameTime == 3)
+            {
+                elapsedTime += Time.deltaTime;
+                int minutes = Mathf.FloorToInt(elapsedTime / 60);
+                int seconds = Mathf.FloorToInt(elapsedTime % 60);
+                time.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            }
+            
+        }
+
     }
 
     public void StartGoal()
