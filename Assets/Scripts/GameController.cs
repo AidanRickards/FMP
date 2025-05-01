@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class GameController : MonoBehaviour
     public float countTime;
     public TMP_Text time;
 
+    public TMP_Text wins;
+    public GameObject gameFinished;
 
     void Start()
     {
@@ -51,6 +54,8 @@ public class GameController : MonoBehaviour
             print("done");
             countTime = 1200;
         }
+
+        
     }
 
     // Update is called once per frame
@@ -89,6 +94,16 @@ public class GameController : MonoBehaviour
                 time.text = string.Format("{0:00}:{1:00}", minutes, seconds);
             }
             
+            if(SettingsController.gameTime != 3 && countTime <= 0)
+            {
+                StartCoroutine("GameOver");
+            }
+
+        }
+
+        if (countTime < 0)
+        {
+            countTime = 0;
         }
 
     }
@@ -125,7 +140,6 @@ public class GameController : MonoBehaviour
 
     IEnumerator Restart()
     {
-        print("GameBegin");
         gameAwake = false;
 
         WaitForSeconds wait = new WaitForSeconds(1);
@@ -141,5 +155,37 @@ public class GameController : MonoBehaviour
 
         countdownObj.SetActive(false);
         gameAwake = true;
+    }
+
+    IEnumerator GameOver()
+    {
+        gameAwake = false ;
+        WaitForSeconds wait = new WaitForSeconds(3);
+
+        if(score1 > score2)
+        {
+            print("Game Over");
+            countTime = 0;
+            gameAwake = false;
+            wins.color = Color.blue;
+            wins.text = ("Blue Wins");
+            gameFinished.SetActive(true);
+            countTime = 0;
+        }
+
+        if (score1 < score2)
+        {
+            countTime = 0;
+            gameAwake = false;
+            wins.color = new Vector4(0.996f, 0.644f, 0, 1);
+            wins.text = ("Orange Wins");
+            gameFinished.SetActive(true);
+            countTime = 0;
+        }
+
+        yield return wait;
+
+        SceneManager.LoadScene("Main Menu");
+        print("Game complete");
     }
 }

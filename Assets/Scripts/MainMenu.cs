@@ -61,5 +61,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene("Game");
+        GameController.score1 = 0;
+        GameController.score2 = 0;
     }
 }

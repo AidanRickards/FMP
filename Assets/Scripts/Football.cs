@@ -25,6 +25,7 @@ public class Football : MonoBehaviour
         {
             if (GameController.gameAwake == true)
             {
+                GameController.gameAwake = false;
                 Debug.Log("Goal1 hit");
                 particle.Play();
                 GameController.score2++;
@@ -37,6 +38,7 @@ public class Football : MonoBehaviour
         {
             if (GameController.gameAwake == true)
             {
+                GameController.gameAwake = false;
                 Debug.Log("Goal2 hit");
                 particle.Play();
                 GameController.score1++;

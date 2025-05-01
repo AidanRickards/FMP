@@ -135,15 +135,15 @@ public class CarControl : MonoBehaviour
             //ariel control turning horizontal
             if (Input.GetAxis("Horizontal") != 0 && Input.GetKey(KeyCode.Space) == false)
             {
-                carAngleVelocityA = new Vector3(0, 50 * Input.GetAxis("Horizontal"), 0);
+                carAngleVelocityA = new Vector3(0, 150 * Input.GetAxis("Horizontal"), 0);
                 Quaternion deltaRotation = Quaternion.Euler(carAngleVelocityA * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotation);
             }
 
-            //ariel control turning horizontal
+            //ariel control turning vertical
             if (Input.GetAxis("Vertical") != 0 && Input.GetKey(KeyCode.Space) == false)
             {
-                carAngleVelocityB = new Vector3(75 * Input.GetAxis("Vertical"), 0, 0);
+                carAngleVelocityB = new Vector3(200 * Input.GetAxis("Vertical"), 0, 0);
                 Quaternion deltaRotationB = Quaternion.Euler(carAngleVelocityB * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationB);
             }
@@ -151,7 +151,7 @@ public class CarControl : MonoBehaviour
             //air roll left
             if (Input.GetKey(KeyCode.J))
             {
-                carAngleVelocityC = new Vector3(0, 0, 140);
+                carAngleVelocityC = new Vector3(0, 0, 240);
                 Quaternion deltaRotationC = Quaternion.Euler(carAngleVelocityC * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationC);
 
@@ -168,7 +168,7 @@ public class CarControl : MonoBehaviour
             //air roll right
             if (Input.GetKey(KeyCode.L))
             {
-                carAngleVelocityD = new Vector3(0, 0, -140);
+                carAngleVelocityD = new Vector3(0, 0, -240);
                 Quaternion deltaRotationD = Quaternion.Euler(carAngleVelocityD * Time.deltaTime);
                 rb.MoveRotation(rb.rotation * deltaRotationD);
 
