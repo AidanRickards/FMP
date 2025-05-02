@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class CarControl : MonoBehaviour
 {
@@ -62,6 +63,8 @@ public class CarControl : MonoBehaviour
     private void Update()
     {
 
+        ReadController();
+
         if (GameController.gameAwake)
         {
             if (boostCount > boostCap)
@@ -90,12 +93,12 @@ public class CarControl : MonoBehaviour
                 grounded = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && grounded)
+            if (Input.GetButtonDown("Fire1") && grounded)
             {
                 rb.AddRelativeForce(Vector3.up * jumpForce);
             }
 
-            if (Input.GetKey(KeyCode.LeftShift) && boostCount > 0)
+            if (Input.GetButton("Fire2") && boostCount > 0)
             {
                 rb.AddRelativeForce(Vector3.forward * boostForce);
                 pSystem1.Emit(1);
@@ -118,7 +121,6 @@ public class CarControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-            
     }
 
     public void NotGrounded()
@@ -126,7 +128,7 @@ public class CarControl : MonoBehaviour
         if (!grounded)
         {
             //Double Jump
-            if (Input.GetKeyDown(KeyCode.Space) && doubleJump && Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") ==0)
+            if (Input.GetButtonDown("Fire1") && doubleJump && Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") ==0)
             {
                 rb.AddRelativeForce(Vector3.up * jumpForce);
                 doubleJump = false;
@@ -149,7 +151,7 @@ public class CarControl : MonoBehaviour
             }
 
             //air roll left
-            if (Input.GetKey(KeyCode.J))
+            if (Input.GetButton("LeftShoulder"))
             {
                 carAngleVelocityC = new Vector3(0, 0, 240);
                 Quaternion deltaRotationC = Quaternion.Euler(carAngleVelocityC * Time.deltaTime);
@@ -166,7 +168,7 @@ public class CarControl : MonoBehaviour
             }
 
             //air roll right
-            if (Input.GetKey(KeyCode.L))
+            if (Input.GetButton("RightShoulder"))
             {
                 carAngleVelocityD = new Vector3(0, 0, -240);
                 Quaternion deltaRotationD = Quaternion.Euler(carAngleVelocityD * Time.deltaTime);
@@ -240,7 +242,7 @@ public class CarControl : MonoBehaviour
         if ((Input.GetAxis("Vertical") != 0) || (Input.GetAxis("Horizontal") != 0))
         {
             print("debug");
-            if (Input.GetKeyDown(KeyCode.Space) == true && doubleJump)
+            if (Input.GetButtonDown("Fire1") == true && doubleJump)
             {
                 flipStarted = true;
                 //print("Flipping");
@@ -332,6 +334,38 @@ public class CarControl : MonoBehaviour
         rb.MoveRotation(endRotation);
 
     }
+
+
+    void ReadController()
+    {
+        if (Input.GetButton("LeftTrigger"))
+        {
+            print("left trigger pressed");
+        }
+
+        if (Input.GetButton("RightShoulder"))
+        {
+            print("right shoulder pressed");
+        }
+
+        if (Input.GetButton("Fire1"))
+        {
+            print("Fire 1");
+        }
+
+        if (Input.GetButton("Fire2"))
+        {
+            print("Fire 2");
+        }
+
+        if (Input.GetButton("Fire3"))
+        {
+            print("Fire 3");
+        }
+
+
+    }
+
     /*
     public void Flip()
     {
