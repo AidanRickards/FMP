@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour
     public TMP_Dropdown dropdown;
 
 
+    public Slider _musicSlider, _sfxSlider;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -63,5 +65,26 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Game");
         GameController.score1 = 0;
         GameController.score2 = 0;
+    }
+
+
+    public void ToggleMusic()
+    {
+        AudioManager.Instance.ToggleMusic();
+    }
+
+    public void ToggleSound()
+    {
+        AudioManager.Instance.ToggleSound();
+    }
+
+    public void MusicVolume()
+    {
+        AudioManager.Instance.MusicVolume(_musicSlider.value);
+    }
+
+    public void SoundVolume()
+    {
+        AudioManager.Instance.SoundVolume(_sfxSlider.value);
     }
 }

@@ -27,6 +27,7 @@ public class Football : MonoBehaviour
             {
                 GameController.gameAwake = false;
                 Debug.Log("Goal1 hit");
+                AudioManager.Instance.PlaySound("Goal");
                 particle.Play();
                 GameController.score2++;
 
@@ -40,6 +41,7 @@ public class Football : MonoBehaviour
             {
                 GameController.gameAwake = false;
                 Debug.Log("Goal2 hit");
+                AudioManager.Instance.PlaySound("Goal");
                 particle.Play();
                 GameController.score1++;
 
@@ -48,5 +50,8 @@ public class Football : MonoBehaviour
         }
     }
 
-    
+    private void OnCollisionEnter(Collision collision)
+    {
+        AudioManager.Instance.PlaySound("Ball");
+    }
 }

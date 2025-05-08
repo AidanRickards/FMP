@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
     public TMP_Text blueScore;
     public TMP_Text orangeScore;
 
+    public CarControl cc;
+
     public GameObject player;
     public GameObject ball;
 
@@ -135,6 +137,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Finished");
 
         StartCoroutine("Restart");
+        AudioManager.Instance.PlaySound("Countdown");
 
     }
 
@@ -154,6 +157,7 @@ public class GameController : MonoBehaviour
         }
 
         countdownObj.SetActive(false);
+        cc.boostCount = 33;
         gameAwake = true;
     }
 

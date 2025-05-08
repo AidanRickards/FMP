@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Animations;
+using System;
+using System.Collections;
 
 public class WheelController : MonoBehaviour
 {
@@ -26,6 +28,9 @@ public class WheelController : MonoBehaviour
     public RotationConstraint fl;
     public RotationConstraint br;
     public RotationConstraint bl;
+
+    public float waitTime = 0.54f;
+    bool crRunning = false;
 
 
     public void Update()
@@ -60,8 +65,15 @@ public class WheelController : MonoBehaviour
             {
                 //get forward/reverse acceleration from the vertical axis (W and s keys)
 
+                //AudioManager.Instance.PlaySound("Car");
+                //StartCoroutine("Playsound");
                 currentAcceleration = acceleration * Input.GetAxis("Vertical");
+
+               
             }
+
+            if (!crRunning)
+                StartCoroutine("Playsound");
 
 
             /*if (!controller.boosting)
@@ -160,8 +172,17 @@ public class WheelController : MonoBehaviour
         }
      }
 
-    
 
-    
+
+    IEnumerator Playsound()
+    {
+        crRunning = true;
+        AudioManager.Instance.PlaySound("Car");
+        WaitForSeconds wait = new WaitForSeconds(waitTime);
+
+        
+        yield return wait;
+        crRunning = false;
+    }
 }
 

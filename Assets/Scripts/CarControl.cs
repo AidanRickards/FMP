@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 public class CarControl : MonoBehaviour
 {
@@ -50,6 +51,12 @@ public class CarControl : MonoBehaviour
     public GameObject wheelsPrefab;
     public GameObject wheelSpawnPoint;
     GameObject wheels;
+
+    public GameObject carCamera;
+    public GameObject ballCamera;
+    bool ballCam = false;
+    int ballCamNum = -1;
+    
 
     public JumpTimer jt;
     private void Start()
@@ -116,6 +123,22 @@ public class CarControl : MonoBehaviour
                 /*Destroy(this);
                 Instantiate(player, wheelSpawnPoint.transform.position,Quaternion.Euler(0,this.transform.rotation.y, 0), this.gameObject.transform);*/
             }
+        }
+
+        if (ballCamNum == 1)
+        {
+            carCamera.SetActive(false);
+            ballCamera.SetActive(true);
+        }
+        if (ballCamNum == -1)
+        {
+            carCamera.SetActive(true);
+            ballCamera.SetActive(false);
+        }
+
+        if (Input.GetButtonDown("Fire4"))
+        {
+            ballCamNum = ballCamNum * -1;
         }
     }
 
@@ -361,6 +384,10 @@ public class CarControl : MonoBehaviour
         if (Input.GetButton("Fire3"))
         {
             print("Fire 3");
+        }
+        if (Input.GetButton("Fire4"))
+        {
+            print("Fire 4");
         }
 
 
