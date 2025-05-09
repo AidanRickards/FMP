@@ -189,7 +189,7 @@ public class GameController : MonoBehaviour
 
         yield return wait;
 
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene("LoadingMenu");
         print("Game complete");
     }
 }

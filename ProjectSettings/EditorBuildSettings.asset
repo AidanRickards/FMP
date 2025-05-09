@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/LoadingGame.unity
+    guid: 881635b7a64e388479ea57ab5651a94f
+  - enabled: 1
+    path: Assets/Scenes/LoadingMenu.unity
+    guid: 53bb4f874c491fb48acdad3390b024f2
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 5d8c578c7d21d534c8b6854d02ca43b7, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 55e60946a9b9a6b4abb9c80eb7eefaab, type: 3}
