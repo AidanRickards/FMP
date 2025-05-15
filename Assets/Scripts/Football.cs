@@ -30,6 +30,7 @@ public class Football : MonoBehaviour
                 AudioManager.Instance.PlaySound("Goal");
                 particle.Play();
                 GameController.score2++;
+                SettingsController.totalGoals++;
 
                 gameController.StartGoal();
             }
@@ -44,6 +45,7 @@ public class Football : MonoBehaviour
                 AudioManager.Instance.PlaySound("Goal");
                 particle.Play();
                 GameController.score1++;
+                SettingsController.totalGoals++;
 
                 gameController.StartGoal();
             }

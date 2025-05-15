@@ -45,10 +45,10 @@ public class CarControl : MonoBehaviour
 
     public WheelCollider frontLeft;
     public WheelCollider frontRight;
-    public GameObject backRight;
-    public GameObject backLeft;
+    public WheelCollider backRight;
+    public WheelCollider backLeft;
 
-    public GameObject wheelsPrefab;
+    //public GameObject wheelsPrefab;
     public GameObject wheelSpawnPoint;
     GameObject wheels;
 
@@ -72,6 +72,94 @@ public class CarControl : MonoBehaviour
 
         ReadController();
 
+        /*if (GameController.gameAwake)
+        {
+            if (boostCount > boostCap)
+                boostCount = boostCap;
+
+            velocity = rb.linearVelocity;
+
+            /*if (rb.linearVelocity.x > 30.1f)
+            {
+                rb.linearVelocity = new Vector3(30, rb.linearVelocity.y, rb.linearVelocity.z);
+            }
+            if (rb.linearVelocity.x < -30.1f)
+            {
+                rb.linearVelocity = new Vector3(-30, rb.linearVelocity.y, rb.linearVelocity.z);
+            }
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
+            {
+                Debug.DrawRay(hit.point, hit.normal, Color.yellow);
+                grounded = true;
+            }
+            else
+            {
+                grounded = false;
+            }
+
+            if (Input.GetButtonDown("Fire1") && grounded)
+            {
+                rb.AddRelativeForce(Vector3.up * jumpForce);
+            }
+
+            if (Input.GetButton("Fire2") && boostCount > 0)
+            {
+                rb.AddRelativeForce(Vector3.forward * boostForce);
+                pSystem1.Emit(1);
+                pSystem2.Emit(1);
+                if (SettingsController.unlimitedBoost == false)
+                    boostCount = boostCount - 0.1f;
+            }
+
+            NotGrounded();
+            Grounded();
+
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                /*Destroy(this);
+                Instantiate(player, wheelSpawnPoint.transform.position,Quaternion.Euler(0,this.transform.rotation.y, 0), this.gameObject.transform);
+            }
+        }*/
+
+        if (ballCamNum == 1)
+        {
+            carCamera.SetActive(false);
+            ballCamera.SetActive(true);
+        }
+        if (ballCamNum == -1)
+        {
+            carCamera.SetActive(true);
+            ballCamera.SetActive(false);
+        }
+
+        if (Input.GetButtonDown("Fire4"))
+        {
+            ballCamNum = ballCamNum * -1;
+        }
+
+
+
+
+        //ground check
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
+        {
+            Debug.DrawRay(hit.point, hit.normal, Color.yellow);
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
+    }
+
+    private void FixedUpdate()
+    {
         if (GameController.gameAwake)
         {
             if (boostCount > boostCap)
@@ -88,17 +176,7 @@ public class CarControl : MonoBehaviour
                 rb.linearVelocity = new Vector3(-30, rb.linearVelocity.y, rb.linearVelocity.z);
             }*/
 
-            RaycastHit hit;
-
-            if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
-            {
-                Debug.DrawRay(hit.point, hit.normal, Color.yellow);
-                grounded = true;
-            }
-            else
-            {
-                grounded = false;
-            }
+            
 
             if (Input.GetButtonDown("Fire1") && grounded)
             {
@@ -140,10 +218,6 @@ public class CarControl : MonoBehaviour
         {
             ballCamNum = ballCamNum * -1;
         }
-    }
-
-    private void FixedUpdate()
-    {
     }
 
     public void NotGrounded()
@@ -361,9 +435,9 @@ public class CarControl : MonoBehaviour
 
     void ReadController()
     {
-        if (Input.GetButton("LeftTrigger"))
+        if (Input.GetButton("Esc"))
         {
-            print("left trigger pressed");
+            print("Esc pressed");
         }
 
         if (Input.GetButton("RightShoulder"))

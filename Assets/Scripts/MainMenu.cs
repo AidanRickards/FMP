@@ -9,6 +9,8 @@ public class MainMenu : MonoBehaviour
     public Toggle toggle;
     public TMP_Dropdown dropdown;
 
+    public Slider goalCounter;
+    public TMP_Text levelText;
 
     public Slider _musicSlider, _sfxSlider;
 
@@ -32,8 +34,33 @@ public class MainMenu : MonoBehaviour
             SettingsController.unlimitedBoost = false;
         }
 
+        if(SettingsController.totalGoals < 10)
+        {
+            goalCounter.maxValue = 10;
+            levelText.text = "Current Level: 1";
+        }
+        if (SettingsController.totalGoals < 25 && SettingsController.totalGoals >= 10)
+        {
+            goalCounter.maxValue = 25;
+            levelText.text = "Current Level: 2";
+        }
+        if (SettingsController.totalGoals < 100 && SettingsController.totalGoals >= 25)
+        {
+            goalCounter.maxValue = 100;
+            levelText.text = "Current Level: 3";
+        }
 
-        SettingsController.gameTime = dropdown.value;
+        if (SettingsController.totalGoals < 100)
+        {
+            goalCounter.value = SettingsController.totalGoals;
+        }
+        else
+        {
+            goalCounter.value = 100;
+            levelText.text = "Current Level: MAX";
+        }
+
+            SettingsController.gameTime = dropdown.value;
 
         //Debug.Log(SettingsController.unlimitedBoost);
         //Debug.Log(SettingsController.gameTime);
@@ -86,5 +113,10 @@ public class MainMenu : MonoBehaviour
     public void SoundVolume()
     {
         AudioManager.Instance.SoundVolume(_sfxSlider.value);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
