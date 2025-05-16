@@ -56,9 +56,12 @@ public class CarControl : MonoBehaviour
     public GameObject ballCamera;
     bool ballCam = false;
     int ballCamNum = -1;
-    
 
     public JumpTimer jt;
+
+    bool isJumpPressed = false;
+
+
     private void Start()
     {
         carAngleVelocityA = new Vector3(0, 50, 0);
@@ -72,7 +75,9 @@ public class CarControl : MonoBehaviour
 
         ReadController();
 
-        /*if (GameController.gameAwake)
+
+
+        if (GameController.gameAwake)
         {
             if (boostCount > boostCap)
                 boostCount = boostCap;
@@ -86,7 +91,7 @@ public class CarControl : MonoBehaviour
             if (rb.linearVelocity.x < -30.1f)
             {
                 rb.linearVelocity = new Vector3(-30, rb.linearVelocity.y, rb.linearVelocity.z);
-            }
+            }*/
 
             RaycastHit hit;
 
@@ -102,7 +107,7 @@ public class CarControl : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1") && grounded)
             {
-                rb.AddRelativeForce(Vector3.up * jumpForce);
+                isJumpPressed = true;
             }
 
             if (Input.GetButton("Fire2") && boostCount > 0)
@@ -118,12 +123,12 @@ public class CarControl : MonoBehaviour
             Grounded();
 
 
-            if (Input.GetKeyDown(KeyCode.U))
+            /*if (Input.GetKeyDown(KeyCode.U))
             {
                 /*Destroy(this);
                 Instantiate(player, wheelSpawnPoint.transform.position,Quaternion.Euler(0,this.transform.rotation.y, 0), this.gameObject.transform);
-            }
-        }*/
+            }*/
+        }
 
         if (ballCamNum == 1)
         {
@@ -140,27 +145,20 @@ public class CarControl : MonoBehaviour
         {
             ballCamNum = ballCamNum * -1;
         }
-
-
-
-
-        //ground check
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, -transform.up, out hit, groundCheckDistance))
-        {
-            Debug.DrawRay(hit.point, hit.normal, Color.yellow);
-            grounded = true;
-        }
-        else
-        {
-            grounded = false;
-        }
+    
     }
 
     private void FixedUpdate()
     {
-        if (GameController.gameAwake)
+        if (isJumpPressed)
+        {
+            rb.AddRelativeForce(Vector3.up * 600000);
+            //rb.AddRelativeForce(Vector3.up * jumpForce);
+            //clear jump flag
+            isJumpPressed = false;
+        }
+
+        /*if (GameController.gameAwake)
         {
             if (boostCount > boostCap)
                 boostCount = boostCap;
@@ -174,7 +172,7 @@ public class CarControl : MonoBehaviour
             if (rb.linearVelocity.x < -30.1f)
             {
                 rb.linearVelocity = new Vector3(-30, rb.linearVelocity.y, rb.linearVelocity.z);
-            }*/
+            }
 
             
 
@@ -199,7 +197,7 @@ public class CarControl : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.U))
             {
                 /*Destroy(this);
-                Instantiate(player, wheelSpawnPoint.transform.position,Quaternion.Euler(0,this.transform.rotation.y, 0), this.gameObject.transform);*/
+                Instantiate(player, wheelSpawnPoint.transform.position,Quaternion.Euler(0,this.transform.rotation.y, 0), this.gameObject.transform);
             }
         }
 
@@ -217,7 +215,7 @@ public class CarControl : MonoBehaviour
         if (Input.GetButtonDown("Fire4"))
         {
             ballCamNum = ballCamNum * -1;
-        }
+        }*/
     }
 
     public void NotGrounded()
@@ -231,7 +229,7 @@ public class CarControl : MonoBehaviour
                 doubleJump = false;
             }
 
-            //ariel control turning horizontal
+            //aerial control turning horizontal
             if (Input.GetAxis("Horizontal") != 0 && Input.GetKey(KeyCode.Space) == false)
             {
                 carAngleVelocityA = new Vector3(0, 150 * Input.GetAxis("Horizontal"), 0);

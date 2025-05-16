@@ -8,14 +8,14 @@ public class BoostPadFull : MonoBehaviour
     public float currentTime = 10f;
 
     public GameObject boostpad;
-    MeshRenderer rnd;
+    public MeshRenderer rnd;
     public MeshRenderer rnd2;
 
     public CarControl cc;
 
     private void Start()
     {
-        rnd = boostpad.GetComponent<MeshRenderer>();
+        
     }
     void Update()
     {
