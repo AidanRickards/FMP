@@ -8,14 +8,14 @@ public class BoostPadFull : MonoBehaviour
     public float currentTime = 10f;
 
     public GameObject boostpad;
-    public MeshRenderer rnd;
+    MeshRenderer rnd;
     public MeshRenderer rnd2;
 
     public CarControl cc;
 
     private void Start()
     {
-        
+        rnd = boostpad.GetComponent<MeshRenderer>();
     }
     void Update()
     {
@@ -43,11 +43,15 @@ public class BoostPadFull : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && cc.boostCount < 100)
         {
+            if (active == true)
+            {
+                cc.boostCount = cc.boostCap;
 
-            currentTime = 10;
-            active = false;
-            rnd.enabled = false;
-            rnd2.enabled = false;
+                currentTime = 10;
+                active = false;
+                rnd.enabled = false;
+                rnd2.enabled = false;
+            }
         }
     }
 }

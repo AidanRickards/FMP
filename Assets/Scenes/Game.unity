@@ -2576,7 +2576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c19c4d581da21544d8650aa084ac1bd8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.19
+      value: 9.28
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c19c4d581da21544d8650aa084ac1bd8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14353,7 +14353,7 @@ MonoBehaviour:
   backLeft: {fileID: 3795094303442648857}
   frontRightTransform: {fileID: 3742043900372610724}
   frontLeftTransform: {fileID: 1438998134411658740}
-  acceleration: 600
+  acceleration: 1200
   breakingForce: 1000
   maxTurnAngle: 15
   stopForce: 1000000
@@ -14418,11 +14418,12 @@ MonoBehaviour:
   grounded: 0
   groundCheckDistance: 0.3
   jumpForce: 600000
-  boostForce: 15000
+  boostForce: 10000
   velocity: {x: 0, y: 0, z: 0}
   flipForce: 1000
   flipDuration: 0.5
   boostCount: 33
+  boostCap: 100
   pSystem1: {fileID: 1535658807222779362}
   pSystem2: {fileID: 4276449161343290826}
   doubleJump: 0
@@ -14452,7 +14453,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.8999866, y: 1.37, z: 3.1638641}
   m_Center: {x: 0, y: 0.82, z: 0.009047508}

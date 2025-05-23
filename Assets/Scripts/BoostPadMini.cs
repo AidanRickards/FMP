@@ -40,10 +40,14 @@ public class BoostPadMini : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && cc.boostCount < 100)
         {
+            if (active == true)
+            {
+                cc.boostCount = cc.boostCount + 12;
 
-            currentTime = 5;
-            active = false;
-            rnd.enabled = false;
+                currentTime = 5;
+                active = false;
+                rnd.enabled = false;
+            }
         }
     }
 }

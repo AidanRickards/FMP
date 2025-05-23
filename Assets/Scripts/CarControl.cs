@@ -13,6 +13,9 @@ public class CarControl : MonoBehaviour
 
     public WheelController wc;
 
+    //BoostPadMini mini;
+    //BoostPadFull full;
+
     public bool grounded = false;
     public float groundCheckDistance;
     private float bufferCheckDistance = 0.1f;
@@ -24,7 +27,7 @@ public class CarControl : MonoBehaviour
     public float flipDuration = 0.5f; // Controls how fast the flip completes
 
     public float boostCount = 33;
-    private int boostCap = 100;
+    public int boostCap = 100;
     private int boostFloor = 0;
 
     public ParticleSystem pSystem1;
@@ -320,15 +323,23 @@ public class CarControl : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "MiniBoost")
+        if (other.gameObject.tag == "MiniBoost")
         {
-            if(boostCount < boostCap)
-                boostCount = boostCount + 6;
+            bool mini = other.gameObject.GetComponent<BoostPadMini>().active;
+            if (mini == true)
+            {
+                if (boostCount < boostCap)
+                    boostCount = boostCount + 12;
+            }
         }
         if(other.gameObject.tag == "FullBoost")
         {
-            if (boostCount < boostCap)
-                boostCount = boostCap;
+            bool full = other.gameObject.GetComponent<BoostPadFull>().active;
+            if (full == true)
+            {
+                if (boostCount < boostCap)
+                    boostCount = boostCap;
+            }
         }
     }
 
@@ -395,10 +406,10 @@ public class CarControl : MonoBehaviour
         }
 
         //
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 120; i++)
         {
-            transform.Rotate(6 * currentlyHeldX, 0, 0);
-            carBody.transform.Rotate(0, 0, 6 * currentlyHeldZ);
+            transform.Rotate(3 * currentlyHeldX, 0, 0);
+            carBody.transform.Rotate(0, 0, 3 * currentlyHeldZ);
             flipStarted = false;
             yield return wait;
         }

@@ -113,10 +113,10 @@ public class WheelController : MonoBehaviour
             }
         }
             //if space is pressent give breakingforce value
-            if (Input.GetKey(KeyCode.LeftControl))
-        {
-            currentBreakForce = breakingForce;
-        }
+            if (Input.GetButton ("Fire3"))
+            {
+                currentBreakForce = breakingForce;
+            }
         else
         {
             currentBreakForce = 0f;
